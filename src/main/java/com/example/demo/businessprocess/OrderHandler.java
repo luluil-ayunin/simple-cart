@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.controller.response.OrdersResponse;
 import com.example.demo.persistence.Cart;
 import com.example.demo.persistence.Orders;
 import com.example.demo.service.CartService;
@@ -21,21 +22,28 @@ public class OrderHandler {
 	@Autowired
 	private CartService cartService;
 	
-	public Orders placeOrder(List<Long> carts) {
+	public OrdersResponse placeOrder(List<Long> carts) {
 		Orders newOrder = new Orders();
-		newOrder.setCartId(setCarts(carts));
+		newOrder = orderService.addOrder(newOrder);
 		
-		return orderService.addOrder(newOrder);
+		
+		OrdersResponse response = new OrdersResponse();
+		response.setState("berhasil");
+		response.setId(newOrder);
+		response.setCarts(setCarts(carts, newOrder));
+		return response;
 	}
 	
 	/**
 	 * @param cartsId
 	 * @return
 	 */
-	public Set<Cart> setCarts(List<Long> cartsId){
+	public Set<Cart> setCarts(List<Long> cartsId, Orders order){
 		List<Cart> cartsList = new ArrayList<>();
 		cartsId.forEach((cartId) -> {
-			Cart cart = cartService.getCartById(cartId);
+			Cart cart = new Cart();
+			cart.setOrderId(order);
+			cart = cartService.setToOrder(cartId, cart);
 			cartsList.add(cart);
 		});
 		

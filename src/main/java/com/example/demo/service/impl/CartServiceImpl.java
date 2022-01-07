@@ -26,12 +26,6 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public Cart updateQuantity(Long id, int qty) {
-		updateQuantity(id, qty);
-		return cartRepository.getById(id);
-	}
-
-	@Override
 	public Void deleteCart(Long id) {
 		cartRepository.deleteById(id);
 		return null;
@@ -45,6 +39,20 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public Cart getCartById(Long id) {
 		return cartRepository.getById(id);
+	}
+
+	@Override
+	public Cart setToOrder(Long id, Cart cart) {
+		Cart updatedCart = cartRepository.getById(id);
+		updatedCart.setOrderId(cart.getOrderId());
+		return cartRepository.save(updatedCart);
+	}
+
+	@Override
+	public Cart updateCart(Long id, Cart cart) {
+		Cart updatedCart = cartRepository.getById(id);
+		updatedCart.setCartDetail(cart.getCartDetail());
+		return cartRepository.save(updatedCart);
 	}
 
 }

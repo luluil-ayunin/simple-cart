@@ -2,21 +2,24 @@ package com.example.demo.persistence;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity
 @Table(name = "user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	@Column(name = "user_id")
 	private Long id;
 	private String name;
@@ -25,7 +28,7 @@ public class User{
 	@Column(unique = true)
 	private String email;
 
-	@OneToMany(mappedBy = "userId")
+	@OneToMany(mappedBy = "userId", cascade = CascadeType.REMOVE)
 	@Column(name = "cart_id", nullable = true)
 	private Set<Cart> cart;
 
@@ -64,10 +67,6 @@ public class User{
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public Set<Cart> getCart() {
-		return cart;
 	}
 
 	public void setCart(Set<Cart> cart) {

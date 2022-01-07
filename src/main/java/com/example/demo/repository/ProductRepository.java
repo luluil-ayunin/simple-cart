@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.persistence.Product;
@@ -13,9 +14,9 @@ import com.example.demo.persistence.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>{
 
-	@Query(value="select p from product p where p.product_name like :name"
-			, nativeQuery=true)
-	List<Product> getProductByName(String name);
+	@Query("select p from Product p where p.productName like concat('%',:name,'%')")
+	List<Product> getProductByName(@Param("name") String name);
 	
-	List<Product> findByProductNameContaining(String productName);
+	List<Product> findByProductNameIgnoreCaseContaining(String productName);
+	
 }

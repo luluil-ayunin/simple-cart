@@ -1,21 +1,17 @@
 package com.example.demo.businessprocess;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.controller.response.CartInputRequest;
+import com.example.demo.controller.response.CartUpdateQtyRequest;
 import com.example.demo.persistence.Cart;
 import com.example.demo.persistence.CartDetail;
-import com.example.demo.persistence.Orders;
 import com.example.demo.persistence.Product;
 import com.example.demo.service.CartDetailService;
 import com.example.demo.service.CartService;
-import com.example.demo.service.OrderService;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.UserService;
 
@@ -30,8 +26,6 @@ public class CartHandler {
 	private ProductService productService;
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private OrderService orderService;
 	
 	public Cart addCart(CartInputRequest cartInputRequest) {
 		Product selectedProduct = getProductById(cartInputRequest.getProductId());
@@ -43,13 +37,15 @@ public class CartHandler {
 		
 		return cartService.addCart(cart);
 	}
-	
-//	public Orders placeOrder(List<Cart> carts) {
-//		Set<Cart> cartSet = carts.stream().collect(Collectors.toSet());
-//		Orders orders = new Orders();
-//		orders.setCartId(cartSet);
-//		return orderService.addOrder(orders);
-//	}
+
+	public Cart updateQtyCart(CartUpdateQtyRequest cartUpdateQtyRequest) {
+		Cart updatedCart = cartService.getCartById(cartUpdateQtyRequest.getCartId());
+		CartDetail cartDetail = updatedCart.getCartDetail();
+		cartDetail.setQuantity(cartDetail.getQuantity()+cartUpdateQtyRequest.getQty());
+		cartDetailService.updateCartDetail(updatedCart.getCartDetail().getId(), cartDetail);
+
+		return updatedCart;
+	}
 	
 	public Product getProductById(Long id) {
 		return productService.getOneproduct(id);

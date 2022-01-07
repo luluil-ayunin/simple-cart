@@ -20,4 +20,5 @@ public interface CartDetailRepository extends JpaRepository<CartDetail, Long>{
 			+ "where c.order_id = :orderId", 
 			nativeQuery=true)
 	List<CartDetail> getCartDetailByOrder(Long orderId);
+	
 }

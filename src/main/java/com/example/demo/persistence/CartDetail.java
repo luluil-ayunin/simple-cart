@@ -6,9 +6,7 @@ import java.time.Instant;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,20 +17,20 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+
 @Entity
 @Table(name = "cart_detail")
 public class CartDetail {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	@Column(name = "cart_detail_id")
 	private Long id;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "product_id")	
 	private Product product;
 	
-	@OneToOne(mappedBy = "cartDetail",cascade = CascadeType.ALL,
-			fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "cartDetail",cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn
 	private Cart cart;
 	
@@ -63,10 +61,6 @@ public class CartDetail {
 
 	public void setProductEntity(Product productEntity) {
 		this.product = productEntity;
-	}
-
-	public Cart getCart() {
-		return cart;
 	}
 
 	public void setCart(Cart cart) {

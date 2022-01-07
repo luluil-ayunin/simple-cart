@@ -23,12 +23,6 @@ public class CartDetailServiceImpl implements CartDetailService{
 	}
 
 	@Override
-	public List<CartDetail> getCartDetailByOrder(Long orderId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public CartDetail addCartDetail(CartDetail cartDetail) {
 		CartDetail insertedCartDetail = cartDetailRepository.save(cartDetail);
 		return insertedCartDetail;

@@ -9,7 +9,7 @@ public interface CartService {
 	List<Cart> getCarts();
 	Cart getCartById(Long id);
 	Cart addCart(Cart newCart);
-	Cart updateQuantity(Long id, int qty);
+	Cart updateCart(Long id, Cart cart);
 	Void deleteCart(Long id);
-
+	Cart setToOrder(Long id, Cart cart);
 }

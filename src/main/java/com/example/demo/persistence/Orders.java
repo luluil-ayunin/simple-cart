@@ -6,16 +6,17 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "orders")
 public class Orders {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	@Column(name = "order_id")
 	private Long id;
 	
@@ -34,6 +35,7 @@ public class Orders {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public Set<Cart> getCartId() {
 		return carts;
 	}
